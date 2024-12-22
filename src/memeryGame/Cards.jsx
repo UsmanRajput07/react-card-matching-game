@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import { toast, Toaster } from 'react-hot-toast';
 const data = ["😑", "😒", "🤖", "🚀", "🫡"];
-import { toast } from "react-hot-toast"
 const showToast = () => {
-    toast.success('🎉 You found a match! Great job!', {
+    toast('🎉 You found a match! Great job!', {
         position: 'top-center', // Keeps the toast centered at the top
         style: {
             background: '#222', // Darker background for better contrast
@@ -13,7 +13,6 @@ const showToast = () => {
             textAlign: 'center', // Centers the text
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)', // Adds a subtle shadow for a 3D effect
         },
-        icon: '🌟', // Adds an eye-catching icon
         duration: 4000, // Keeps the toast on screen for 4 seconds
     });
 };
@@ -41,6 +40,12 @@ export default function Cards() {
                 if (firstValue === secondValue) {
                     setFirstCardIndex(null);
                     setMatchingCards((prev) => [...prev, firstCardIndex, index]);
+                    if (matchingCards.length === card.length - 2) {
+                        showToast();
+                        setSecondCardIndex(null)
+                        setFirstCardIndex(null)
+                        setMatchingCards([])
+                    }
                 }
                 else {
                     setSecondCardIndex(index);
@@ -54,7 +59,7 @@ export default function Cards() {
     }
     return (
         <div className='gameContainer'>
-            
+            <Toaster />
             {
                 card.map((card, idx) => {
                     return (
